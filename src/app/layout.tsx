@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -31,9 +32,7 @@ export default function RootLayout({
         <Header />
         {/* Main content should respect header height */}
         <main className="flex-1">{children}</main>
-        <footer className="w-full p-4 bg-gray-800 text-white flex-shrink-0">
-          footer
-        </footer>
+        <Footer />
       </body>
     </html>
   );

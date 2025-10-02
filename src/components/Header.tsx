@@ -1,69 +1,105 @@
-import { Banknote, CircleUser, Search } from "lucide-react";
-import React from "react";
+"use client";
+import { Banknote, CircleUser, Search, Menu, X } from "lucide-react";
+import React, { useState } from "react";
 import Marquee from "react-fast-marquee";
 
 function Header() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const navLinks = [
+    "হোম",
+    "আপডেট নিউজ",
+    "বিষয়ভিত্তিক লেখা (Blog)",
+    "বই ও PDF",
+    "কুইজ খেলুন",
+    "Seeking Solution",
+    "আমাদের সম্পর্কে",
+  ];
+
   return (
-    <header className="w-full py-4 bg-gray-800 text-white flex flex-col space-y-4">
-      <div className="w-full lg:max-w-7xl mx-auto flex justify-between items-center">
-        <span className="flex items-center space-x-2">
-          <img src="/logo.png" alt="Logo" className="h-8 w-8" />
+    <header className="w-full bg-gray-900 text-gray-100 shadow-lg">
+      {/* Top Bar */}
+      <div className="w-full lg:max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center py-4 px-4 md:px-0 space-y-4 md:space-y-0">
+        {/* Logo */}
+        <span className="flex items-center space-x-3 text-xl font-bold cursor-pointer">
+          <img src="/logo.png" alt="Logo" className="h-10 w-10" />
           <span>Mutadeen</span>
         </span>
 
-        <div className="w-2xl flex items-center space-x-2 rounded-full border-2 border-gray-700 p-2">
-          <span className="p-2 bg-gray-700 rounded-full">
-            <Search size={15} />
+        {/* Search Bar */}
+        <div className="flex items-center w-full md:w-2/4 bg-gray-800 rounded-full border border-gray-700 overflow-hidden">
+          <span className="p-3 flex items-center justify-center bg-gray-700">
+            <Search size={18} />
           </span>
-
           <input
             type="text"
-            placeholder="Search.."
-            className="outline-none w-full"
+            placeholder="Search..."
+            className="w-full px-4 py-2 bg-transparent outline-none text-gray-100 placeholder-gray-400"
           />
         </div>
-        <div className="flex items-center space-x-2">
-          <button className="py-2 px-2.5 bg-gray-700 rounded-full flex justify-center items-center space-x-2">
+
+        {/* User Buttons */}
+        <div className="flex items-center space-x-3">
+          <button className="hidden md:flex items-center space-x-2 bg-gray-800 hover:bg-indigo-600 transition-colors px-4 py-2 rounded-full font-medium shadow-sm">
             <CircleUser />
             <span>Login</span>
           </button>
-          <button className="py-2 px-2.5 bg-gray-700 rounded-full flex justify-center items-center space-x-2">
+          <button className="hidden md:flex items-center space-x-2 bg-gray-800 hover:bg-indigo-600 transition-colors px-4 py-2 rounded-full font-medium shadow-sm">
             <Banknote />
             <span>Donation</span>
+          </button>
+
+          {/* Mobile menu button */}
+          <button
+            className="md:hidden flex items-center p-2 bg-gray-800 rounded-full hover:bg-indigo-600 transition-colors"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {isMenuOpen ? <X /> : <Menu />}
           </button>
         </div>
       </div>
 
-      <div className="w-full">
-        <Marquee gradient={false} speed={100}>
-          This is a smooth scrolling text using react-fast-marquee!
+      {/* Marquee */}
+      <div className="w-full bg-gray-800 py-2">
+        <Marquee gradient={false} speed={80}>
+          <span className="px-4 text-sm md:text-base">
+            This is a smooth scrolling text!
+          </span>
         </Marquee>
       </div>
 
-      <nav className="w-full lg:max-w-7xl mx-auto p-4 flex justify-center items-center border-2 border-gray-700 rounded-full">
-        <ul className="flex space-x-6">
-          <li className="border border-gray-700 rounded-lg p-4 cursor-pointer">
-            হোম
-          </li>
-          <li className="border border-gray-700 rounded-lg p-4 cursor-pointer">
-            আপডেট নিউজ
-          </li>
-          <li className="border border-gray-700 rounded-lg p-4 cursor-pointer">
-            বিষয়ভিত্তিক লেখা (Blog)
-          </li>
-          <li className="border border-gray-700 rounded-lg p-4 cursor-pointer">
-            বই ও PDF
-          </li>
-          <li className="border border-gray-700 rounded-lg p-4 cursor-pointer">
-            কুইজ খেলুন
-          </li>
-          <li className="border border-gray-700 rounded-lg p-4 cursor-pointer">
-            Seeking Solution
-          </li>
-          <li className="border border-gray-700 rounded-lg p-4 cursor-pointer">
-            আমাদের সম্পর্কে
-          </li>
+      {/* Navigation */}
+      <nav
+        className={`w-full lg:max-w-7xl mx-auto px-4 md:px-0 py-4 transition-all duration-300 ${
+          isMenuOpen
+            ? "max-h-96"
+            : "max-h-0 md:max-h-full overflow-hidden md:overflow-visible"
+        }`}
+      >
+        <ul className="flex flex-col md:flex-row justify-center md:justify-start gap-3">
+          {navLinks.map((link, index) => (
+            <li
+              key={index}
+              className="px-5 py-3 bg-gray-800 border border-gray-700 rounded-xl hover:bg-indigo-600 hover:text-white transition-colors cursor-pointer text-center font-medium shadow-sm"
+            >
+              {link}
+            </li>
+          ))}
         </ul>
+
+        {/* Mobile login/donation buttons */}
+        {isMenuOpen && (
+          <div className="flex flex-col md:hidden mt-4 gap-2">
+            <button className="flex items-center justify-center space-x-2 bg-gray-800 hover:bg-indigo-600 transition-colors px-4 py-2 rounded-full font-medium shadow-sm">
+              <CircleUser />
+              <span>Login</span>
+            </button>
+            <button className="flex items-center justify-center space-x-2 bg-gray-800 hover:bg-indigo-600 transition-colors px-4 py-2 rounded-full font-medium shadow-sm">
+              <Banknote />
+              <span>Donation</span>
+            </button>
+          </div>
+        )}
       </nav>
     </header>
   );

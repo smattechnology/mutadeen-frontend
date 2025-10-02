@@ -76,16 +76,18 @@ function Header() {
             : "max-h-0 md:max-h-full overflow-hidden md:overflow-visible"
         }`}
       >
-        <ul className="flex flex-col md:flex-row justify-center md:justify-start gap-3">
-          {navLinks.map((link, index) => (
-            <li
-              key={index}
-              className="px-5 py-3 bg-gray-800 border border-gray-700 rounded-xl hover:bg-indigo-600 hover:text-white transition-colors cursor-pointer text-center font-medium shadow-sm"
-            >
-              {link}
-            </li>
-          ))}
-        </ul>
+        <div className="w-full max-w-7xl mx-auto p-4 bg-gray-800 rounded-xl shadow-lg flex flex-wrap justify-center items-center gap-4 border border-gray-700">
+          <ul className="flex flex-col md:flex-row justify-center md:justify-start gap-3">
+            {navLinks.map((link, index) => (
+              <li
+                key={index}
+                className="px-5 py-3 bg-gray-700 border border-gray-700 rounded-xl hover:bg-indigo-600 hover:text-white transition-colors cursor-pointer text-center font-medium shadow-sm"
+              >
+                {link}
+              </li>
+            ))}
+          </ul>
+        </div>
 
         {/* Mobile login/donation buttons */}
         {isMenuOpen && (

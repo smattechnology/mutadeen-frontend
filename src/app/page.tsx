@@ -55,7 +55,7 @@ export default function Home() {
       </div>
 
       {/* Quick Links Section */}
-      <div className="w-full max-w-7xl mx-auto p-4 bg-gray-800 rounded-xl shadow-lg flex flex-wrap justify-center items-center gap-4 border border-gray-700">
+      <div className="w-full max-w-7xl mx-auto p-4 flex flex-wrap justify-center items-center gap-4">
         {quickLinks.map((link, index) => (
           <span
             key={index}

@@ -71,9 +71,9 @@ function Header() {
 
       {/* Navigation */}
       <nav
-        className={`w-full lg:max-w-7xl mx-auto px-4 md:px-0 py-4 transition-all duration-300 ${
+        className={`w-full lg:max-w-7xl mx-auto px-4 md:px-0 md:py-4 transition-all duration-300 ${
           isMenuOpen
-            ? "max-h-96"
+            ? "max-h-full py-4"
             : "max-h-0 md:max-h-full overflow-hidden md:overflow-visible"
         }`}
       >

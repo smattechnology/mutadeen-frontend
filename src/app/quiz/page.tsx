@@ -139,12 +139,26 @@ function QuizPage() {
     setTimer(timerId);
   };
 
-  const calculateScore = () => {
-    return quizState.answers.reduce((score, answer, index) => {
-      // Add null check for answer
-      if (answer === null) return score;
-      return answer === quizData[index]?.correctAnswer ? score + 1 : score;
-    }, 0);
+  const calculateScore = (): number => {
+    return quizState.answers.reduce(
+      (score: number, answer: number | null, index: number) => {
+        // Add null check for answer
+        if (answer === null) return score;
+        return answer === quizData[index]?.correctAnswer ? score + 1 : score;
+      },
+      0
+    );
+  };
+
+  const calculateCorrectSoFar = (): number => {
+    return quizState.answers.reduce(
+      (count: number, answer: number | null, index: number) => {
+        return answer !== null && answer === quizData[index]?.correctAnswer
+          ? count + 1
+          : count;
+      },
+      0
+    );
   };
 
   const formatTime = (seconds: number) => {
@@ -156,6 +170,7 @@ function QuizPage() {
   const currentQuestionData = quizData[quizState.currentQuestion];
   const score = calculateScore();
   const percentage = Math.round((score / quizData.length) * 100);
+  const correctSoFar = calculateCorrectSoFar();
 
   // Safe progress value calculation
   const progressValue =
@@ -176,7 +191,7 @@ function QuizPage() {
                 Quiz Completed!
               </CardTitle>
               <CardDescription className="text-lg text-gray-600">
-                Here's how you performed
+                Here&apos;s how you performed
               </CardDescription>
             </CardHeader>
 
@@ -447,13 +462,7 @@ function QuizPage() {
           </Card>
           <Card className="text-center p-4">
             <div className="text-2xl font-bold text-green-600">
-              {quizState.answers.reduce(
-                (count, answer, index) =>
-                  answer !== null && answer === quizData[index]?.correctAnswer
-                    ? count + 1
-                    : count,
-                0
-              )}
+              {correctSoFar}
             </div>
             <div className="text-sm text-gray-600">Correct So Far</div>
           </Card>

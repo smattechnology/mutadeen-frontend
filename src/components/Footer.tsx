@@ -6,7 +6,7 @@ function Footer() {
       <div className="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-3 gap-8">
         {/* About Section */}
         <div className="flex flex-col space-y-4">
-          <img src="/logo.png" alt="Logo" className="h-10 w-10" />
+          <img src="/logo.jpg" alt="Logo" className="h-10 w-25" />
           <p className="text-muted-foreground text-sm">
             Mutadeen is dedicated to providing quality religious content,
             educational resources, and community support.

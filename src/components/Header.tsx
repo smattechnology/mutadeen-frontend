@@ -1,7 +1,7 @@
 "use client";
 import { Banknote, CircleUser, Menu, ChevronRight, X } from "lucide-react";
 import Image from "next/image";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import NavLink from "./ui/nav-link";
@@ -20,6 +20,11 @@ import {
   SheetTrigger,
 } from "./ui/sheet";
 import { cn } from "@/lib/utils";
+import Marquee from "react-fast-marquee";
+import SearchBar from "./SearchBar";
+import { usePathname } from "next/navigation";
+import NProgress from "nprogress";
+import "nprogress/nprogress.css";
 
 interface NavLink {
   name: string;
@@ -190,6 +195,15 @@ function Header() {
   ]);
 
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
+  const pathname = usePathname();
+
+  useEffect(() => {
+    NProgress.start();
+    const timer = setTimeout(() => {
+      NProgress.done();
+    }, 300); // simulate loading delay for smoother effect
+    return () => clearTimeout(timer);
+  }, [pathname]);
 
   const toggleExpanded = (path: string) => {
     const newExpanded = new Set(expandedItems);
@@ -210,7 +224,7 @@ function Header() {
         return (
           <NavigationMenuItem key={index}>
             <NavigationMenuTrigger>{item.name}</NavigationMenuTrigger>
-            <NavigationMenuContent>
+            <NavigationMenuContent className="z-50">
               <ul
                 className={`grid gap-2 ${
                   rowSpanItems.length > 0
@@ -269,8 +283,8 @@ function Header() {
 
   return (
     <header className="w-full sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 md:flex md:flex-col md:items-center md:justify-between">
+        <div className="w-full flex items-center justify-between py-1">
           {/* Logo */}
           <div className="relative w-32 h-10">
             <Link href="/">
@@ -286,11 +300,15 @@ function Header() {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-1">
+          {/* <nav className="hidden lg:flex items-center space-x-1">
             <NavigationMenu viewport={false}>
               <NavigationMenuList>{renderItems}</NavigationMenuList>
             </NavigationMenu>
-          </nav>
+          </nav> */}
+
+          <div className="hidden w-full md:flex justify-center items-center">
+            <SearchBar />
+          </div>
 
           {/* Desktop Actions */}
           <div className="hidden lg:flex items-center space-x-2">
@@ -445,6 +463,16 @@ function Header() {
                 </div>
               </SheetContent>
             </Sheet>
+          </div>
+        </div>
+        <div className="w-full py-1">
+          <nav className="hidden lg:flex items-center space-x-1">
+            <NavigationMenu viewport={false}>
+              <NavigationMenuList>{renderItems}</NavigationMenuList>
+            </NavigationMenu>
+          </nav>
+          <div className="flex items-center space-x-2">
+            <Marquee speed={80}>something</Marquee>
           </div>
         </div>
       </div>

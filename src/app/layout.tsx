@@ -4,6 +4,9 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { ThemeProvider } from "next-themes";
+import AdminShortcut from "@/components/AdminShortcut";
+import { Toaster } from "@/components/ui/sonner";
+import { AuthProvider } from "@/lib/auth/Context";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -16,7 +19,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Mess Bazar - Annoor Foods",
+  title: "Mutadeen Foundation",
   description: "Your one-stop solution for all food needs.",
 };
 
@@ -36,11 +39,20 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {/* Header is sticky itself, so no need to wrap in a div */}
-          <Header />
-          {/* Main content should respect header height */}
-          <main className="flex-1">{children}</main>
-          <Footer />
+          <AuthProvider>
+            {/* Header is sticky itself, so no need to wrap in a div */}
+            <Header />
+            {/* Main content should respect header height */}
+            <main className="flex-1">{children}</main>
+            <Footer />
+            <AdminShortcut
+              combo="Ctrl+Shift+A"
+              route="/admin"
+              requirePassword={true}
+              password="admin"
+            />
+            <Toaster />
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

@@ -25,6 +25,11 @@ import SearchBar from "./SearchBar";
 import { usePathname } from "next/navigation";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
+import AuthModal from "./AuthModal";
+import RegisterModal from "./register-modal";
+import { useRouter } from "next/navigation";
+import path from "path";
+import { useAuth } from "@/lib/auth/Context";
 
 interface NavLink {
   name: string;
@@ -196,8 +201,23 @@ function Header() {
 
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
   const pathname = usePathname();
+  const router = useRouter();
+  const { user } = useAuth();
 
   useEffect(() => {
+    const header = document.getElementById("header");
+    const footer = document.getElementById("footer");
+    if (pathname === "/auth" || pathname?.startsWith("/auth/")) {
+      if (header) header.classList.add("hidden");
+      if (footer) footer.classList.add("hidden");
+    } else {
+      if (header) header.classList.remove("hidden");
+      if (footer) footer.classList.remove("hidden");
+      // ✅ or add .block if needed:
+      // header.classList.add("block");
+      // footer.classList.add("block");
+    }
+
     NProgress.start();
     const timer = setTimeout(() => {
       NProgress.done();
@@ -282,7 +302,10 @@ function Header() {
   }, [navLinks]);
 
   return (
-    <header className="w-full sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
+    <header
+      id="header"
+      className="w-full sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 md:flex md:flex-col md:items-center md:justify-between">
         <div className="w-full flex items-center justify-between py-1">
           {/* Logo */}
@@ -312,16 +335,17 @@ function Header() {
 
           {/* Desktop Actions */}
           <div className="hidden lg:flex items-center space-x-2">
-            <Button variant="outline" size="sm" asChild>
-              <NavLink
-                href="/login"
-                className="inline-flex items-center gap-2 no-underline hover:no-underline"
-                activeClassName="bg-primary text-primary-foreground"
-              >
-                <CircleUser className="h-4 w-4" />
-                <span>Login</span>
-              </NavLink>
-            </Button>
+            {user ? (
+              <CircleUser />
+            ) : (
+              <Button onClick={() => router.push("/auth?section=login")}>
+                Login
+              </Button>
+            )}
+
+            {/* <Button onClick={() => router.push("/auth?section=login")}>
+              Login
+            </Button> */}
             <Button size="sm" asChild>
               <NavLink
                 href="/donate"
